@@ -1,0 +1,53 @@
+<?php
+class Animal {
+    public $animals;
+
+    public function __construct() {
+        $this->animals = ['Harimau', 'Elang', 'Hiu', 'Buaya', 'Unta'];
+    }
+
+    public function index() {
+        echo "Daftar Hewan:". "<br>";
+        foreach ($this->animals as $animal) {
+            echo "- $animal". "<br>";
+        }
+    }
+
+    public function store($Animalnew) {
+        array_push($this->animals, $Animalnew);
+        echo "<br> Telah Menambah $Animalnew.". "<br><br>";
+    }
+
+    public function update($index, $Animalupdate) {
+        if (isset($this->animals[$index])) {
+            $this->animals[$index] = $Animalupdate;
+            echo "<br> Hewan di index $index telah diubah menjadi $Animalupdate.". "<br><br>";
+        } else {
+            echo "Index tidak valid.". "<br><br>";
+        }
+    }
+
+    public function destroy($index) {
+        if (isset($this->animals[$index])) {
+            array_splice($this->animals, $index, 1);
+            echo "<br> Hewan di index $index telah dihapus.". "<br><br>";
+        } else {
+            echo "Index tidak valid.". "<br><br>";
+        }
+    }
+}
+
+$animal = new animal();
+$animal->index();
+$animal->store('Kucing');
+
+$animal->index();
+
+$animal->update(1,'Ular');
+$animal->index();
+
+$animal->destroy(3);
+$animal->index();
+
+
+?>
