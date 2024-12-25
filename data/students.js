@@ -1,4 +1,3 @@
-// data/student.js
 
 const students = [
     { id: 1, nama: "Mikel" },
