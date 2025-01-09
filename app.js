@@ -10,6 +10,10 @@ app.use(bodyParser.urlencoded({ extended: false })); // Middleware tambahan
 const studentRouter = express.Router();
 studentRouter.get('/', StudentController.index);
 studentRouter.post('/', StudentController.store);
+studentRouter.put('/:id', StudentController.update);
+studentRouter.delete('/:id', StudentController.delete);
+studentRouter.get('/:id', StudentController.show);
+
 
 app.use('/students', studentRouter);
 

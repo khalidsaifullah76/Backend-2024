@@ -1,24 +1,17 @@
-// import database
 const db = require("../config/database");
 
-// membuat class Model Student
 class Student {
   /**
    * Membuat method static all.
    */
   static all() {
-    // return Promise sebagai solusi Asynchronous
     return new Promise((resolve, reject) => {
       const sql = "SELECT * from students";
-      /**
-       * Melakukan query menggunakan method query.
-       * Menerima 2 params: query dan callback
-       */
       db.query(sql, (err, results) => {
         if (err) {
-          reject(err); // Jika ada error, reject promise
+          reject(err);
         } else {
-          resolve(results); // Jika berhasil, resolve promise
+          resolve(results);
         }
       });
     });
@@ -26,20 +19,14 @@ class Student {
 
   /**
    * Method untuk insert data.
-   * Menerima parameter data yang akan diinsert.
-   * Mengembalikan data student yang baru diinsert.
    */
   static create(data) {
     return new Promise((resolve, reject) => {
-      // Query SQL untuk insert data
       const sql = "INSERT INTO students SET ?";
-
-      // Menjalankan query
       db.query(sql, data, (err, results) => {
         if (err) {
-          reject(err); // Reject jika ada error
+          reject(err);
         } else {
-          // Mengembalikan data dengan id yang baru diinsert
           resolve({
             id: results.insertId,
             ...data,
@@ -48,7 +35,61 @@ class Student {
       });
     });
   }
+
+  /**
+   * Method untuk update data.
+   */
+  static update(id, data) {
+    return new Promise((resolve, reject) => {
+      const sql = "UPDATE students SET ? WHERE id = ?";
+      db.query(sql, [data, id], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          if (results.affectedRows > 0) {
+            resolve({
+              id: id,
+              ...data,
+            });
+          } else {
+            resolve(null);
+          }
+        }
+      });
+    });
+  }
+
+  /**
+   * Method untuk menghapus data.
+   */
+  static delete(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "DELETE FROM students WHERE id = ?";
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows > 0); 
+        }
+      });
+    });
+  }
+
+  /**
+   * Method untuk mencari data berdasarkan ID.
+   */
+  static findById(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM students WHERE id = ?";
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results[0]); 
+        }
+      });
+    });
+  }
 }
 
-// export class Student
 module.exports = Student;
